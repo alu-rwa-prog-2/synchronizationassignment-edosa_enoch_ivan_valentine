@@ -2,54 +2,46 @@
 #include<stdlib.h>
 #include<pthread.h>
 #include<unistd.h>
-#include <semaphore.h>
 
-#define tray_size 4
+#define MIN_PIZZA 0 
+#define MAX_PIZZA 5 
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
-int num_of_pizza;
+int count = 0;
 
-void chef(){
-}
-void client(){
-}
+void * pizza_fun(void *arg){
+    for(;;){
+        if (count > MIN_PIZZA){
+            pthread_mutex_lock (&mutex);
+            pizzaCount--;
+            printf("User eats Pizza\n");
+            printf("Remaining Pizza: %d\n", pizzaCount);
+            pthread_mutex_unlock (&mutex);
+            sleep(2);
+        }
 
-void * add_pizza(void *arg){
-    int pthread_mutex_lock(pthread_mutex_t*mutex);
-    if (num_of_pizza < tray_size)
-    {
-        printf("Need to bake more pizza");
-        num_of_pizza++;
+        if (count < MAX_PIZZA){
+            pthread_mutex_lock (&mutex);
+            pizzaCount++;
+            printf("Chef makes Pizza\n");
+            printf("Remaining Pizza: %d\n", count);
+
+            pthread_mutex_unlock (&mutex);
+            sleep(2);
+        }
     }
-    else {
-        printf("tray is full");
-    }
-
-    int pthread_mutex_unlock(pthread_mutex_t *mutex);
-
-}
-
-void * remove_pizza(void *arg){
-    int pthread_mutex_lock(pthread_mutex_t*mutex);
-    if (num_of_pizza > 1 && num_of_pizza<=4)// check if all Count_to have been arrived at
-    {
-        printf("take pizza");
-        num_of_pizza--;
-    }
-    else {
-        printf("tray is empty");
-    }
-    int pthread_mutex_unlock(pthread_mutex_t *mutex);
 }
 
-int main(){
-    pthread_t remove_id, add_id;
-    //pthread_t *thread_id = malloc(sizeof(pthread_t) * thread_id);
-    //pthread_create(&thread_id[num_of_pizza], NULL, add_pizza, NULL);
-    pthread_create(&remove_id, NULL, remove_pizza, NULL);
-    pthread_create(&add_id, NULL, add_pizza, NULL);
 
-    pthread_join(remove_id, NULL);
-    pthread_join(add_id, NULL);
+int main(void){
+    int i=0;
+    pthread_t *thread_group = malloc(sizeof(pthread_t) * 100); 
+    for (i=0; i<2; ++i){
+        pthread_create(&thread_group[i], NULL, pizza_fun, NULL);
+    }
 
-
+    for (i=0; i<2; ++i){
+        pthread_join(thread_group[i], NULL); // wait for all threads to finish
+    }
+  return EXIT_SUCCESS;
 }

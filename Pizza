@@ -8,7 +8,7 @@
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
 int count = 0;
-
+// creating a function thread
 void * pizza_fun(void *arg){
     for(;;){
         if (count > MIN_PIZZA){
@@ -31,7 +31,6 @@ void * pizza_fun(void *arg){
         }
     }
 }
-
 
 int main(void){
     int i=0;

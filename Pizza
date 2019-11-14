@@ -15,16 +15,16 @@ void * pizza_fun(void *arg){
     for(;;){
         if (count > MIN_PIZZA){
             pthread_mutex_lock (&mutex);
-            pizzaCount--;
+            count--;
             printf("User eats Pizza\n");
-            printf("Remaining Pizza: %d\n", pizzaCount);
+            printf("Remaining Pizza: %d\n", count);
             pthread_mutex_unlock (&mutex);
             sleep(2);
         }
 
         if (count < MAX_PIZZA){
             pthread_mutex_lock (&mutex);
-            pizzaCount++;
+            count++;
             printf("Chef makes Pizza\n");
             printf("Remaining Pizza: %d\n", count);
 

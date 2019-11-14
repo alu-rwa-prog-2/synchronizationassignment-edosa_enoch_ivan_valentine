@@ -41,7 +41,7 @@ int main(void){
     }
 
     for (i=0; i<2; ++i){
-        pthread_join(thread_group[i], NULL); // wait for all threads to finish
+        pthread_join(thread_group[i], NULL); 
     }
   return EXIT_SUCCESS;
 }

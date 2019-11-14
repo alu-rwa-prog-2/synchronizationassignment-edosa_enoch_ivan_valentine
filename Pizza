@@ -3,10 +3,12 @@
 #include<pthread.h>
 #include<unistd.h>
 
+//setting the minimum and maximum pizza we can have on the tray
+
 #define MIN_PIZZA 0 
 #define MAX_PIZZA 5 
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-
+// creating a varaible for counting number of pizza remaining
 int count = 0;
 // creating a function thread
 void * pizza_fun(void *arg){
@@ -34,11 +36,12 @@ void * pizza_fun(void *arg){
 
 int main(void){
     int i=0;
+    // creating a thread
     pthread_t *thread_group = malloc(sizeof(pthread_t) * 100); 
     for (i=0; i<2; ++i){
         pthread_create(&thread_group[i], NULL, pizza_fun, NULL);
     }
-
+// joining the threads creating
     for (i=0; i<2; ++i){
         pthread_join(thread_group[i], NULL); 
     }
